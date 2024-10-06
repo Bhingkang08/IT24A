@@ -1,0 +1,22 @@
+[
+    {
+        "latitude": 8.362149960960185,
+        "longitude" : 124.8710958666867,
+        "message" : "Boarding House"
+        
+    
+    },
+      
+    {
+        "latitude": 8.364204,
+        "longitude" : 124.868473,
+        "message" : "St. Joseph Court"
+        
+    },
+
+    {
+        "latitude": 8.359871661401142,
+        "longitude" : 124.86818789879149,
+        "message" : "Northern Bukidnon State College"
+    }
+]
