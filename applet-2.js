@@ -18,7 +18,7 @@ class LeafletMap {
             .bindPopup(message);
     }
 
-    
+
     
     loadMarkersFromJson(url) {
         fetch(url)
@@ -36,6 +36,7 @@ class LeafletMap {
 
 }
 const Mymap = new LeafletMap('map', [8.361848, 124.868789], 16);
+
 
 
 Mymap.loadMarkersFromJson('applet-2.json');
