@@ -19,6 +19,7 @@ class LeafletMap {
     }
 
     
+    
     loadMarkersFromJson(url) {
         fetch(url)
             .then(response => response.json())
