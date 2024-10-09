@@ -77,7 +77,7 @@ class LeafletMap {
     this.updateLogDisplay();
   }
 
-  
+
   dataW() {
     this.addMarker(8.364204, 124.868473, "St. Joseph");
     this.attendanceCountW++;
@@ -90,6 +90,7 @@ class LeafletMap {
     this.updateLogDisplay();
   }
 
+  
   updateLogDisplay() {
     this.idContainer.innerHTML = "";
     this.loggedData.forEach((data) => {
