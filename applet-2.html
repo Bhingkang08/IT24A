@@ -37,6 +37,32 @@
             background-color: #fff;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
+
+
+
+        .container {
+            width: 95%;
+            margin: 2rem auto;
+        }
+
+        .btn-container {
+            background: wheat;
+            border-radius: 5px;
+            padding: 3rem 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .btn-container h4 {
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-container button {
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-container #btnclear {
+            margin-left: 0.1rem;
+        }
     </style>
 
     <div>
@@ -74,7 +100,7 @@
     </div>
 
 
-    
+
 
 <body>
 
@@ -82,6 +108,17 @@
         <h2>Leaflet Map</h2>
         <div id="map"></div>
 
+        <div class="btn-container">
+            <h4 id="logCountBH">Attendance Count: </h4>
+            <button class="btn btn-dark" id="btn1">Log Attendance</button>
+            <h4 id="logCountSTJ">Attendance Count: </h4>
+            <button class="btn btn-dark" id="btn2">Log Attendance</button>
+            <h4 id="logCountNBSC">Attendance Count: </h4>
+            <button class="btn btn-dark" id="btn3">Log Attendance</button>
+            <div id="logContainer"></div>
+            <button class="btn btn-primary" id="btnclear">Clear</button>
+        </div>
+    </div>
 
 
 </body>
