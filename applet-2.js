@@ -14,7 +14,7 @@ class LeafletMap {
     this.btn1 = document.getElementById("btn2");
     this.btn2 = document.getElementById("btn3");
 
-    
+
     this.btnclear = document.getElementById("btnclear");
     this.logCountElement = document.getElementById("logCountBH");
     this.logCount1Element = document.getElementById("logCountSTJ");
@@ -65,6 +65,8 @@ class LeafletMap {
     this.logCount2Element.innerHTML = `Northern Bukidnon State College: ${this.attendanceCountK}`;
   }
 
+
+  
   dataB() {
     this.addMarker(
         8.362149960960185,
