@@ -1,0 +1,32 @@
+[
+    {
+        "character_id": 1,
+        "character_name": "Anya Petrova",
+        "character_origin": "The Lost City of Atlantis",
+        "nationality": "Russian"
+    },
+    {
+        "character_id": 2,
+        "character_name": "Liam O'Connell",
+        "character_origin": "The Vampire's Secret",
+        "nationality": "Irish"
+    },
+    {
+        "character_id": 3,
+        "character_name": "Sakura Aoi",
+        "character_origin": "The Dragon's Legacy",
+        "nationality": "Japanese"
+    },
+    {
+        "character_id": 4,
+        "character_name": "Diego Hernandez",
+        "character_origin": "The Forbidden Love",
+        "nationality": "Mexican"
+    },
+    {
+        "character_id": 5,
+        "character_name": "Ethan Carter",
+        "character_origin": "The Time Traveler's Dilemma",
+        "nationality": "American"
+    }
+]

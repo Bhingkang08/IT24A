@@ -18,10 +18,12 @@
             font-family: Arial, sans-serif;
         }
 
+
         .navbar {
             background-color: #fff;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
+
 
         .custom-margin {
             margin-top: 5rem;
@@ -40,6 +42,7 @@
             border-radius: 10px;
         }
 
+
         .flex-container>div {
             background-color: #c4c4c4;
             margin: 10px;
@@ -57,6 +60,7 @@
         }
     </style>
 </head>
+
 
 <body>
     <div>
@@ -94,6 +98,7 @@
         </nav>
     </div>
 
+
     <div>
         <div class="input-group custom-margin">
             <span class="input-group-text" id="inputGroup-sizing-default">
@@ -104,24 +109,13 @@
                 </svg>
             </span>
             <input type="text" class="form-control" aria-label="Sizing example input"
-                aria-describedby="inputGroup-sizing-default" />
+                aria-describedby="inputGroup-sizing-default" id="characterSearchBar" />
             <button class="btn btn-primary" type="button" id="inputGroup-sizing-default">Search</button>
         </div>
-
-        <div>
-            <div class="flex-container">
-                <div>Card 1</div>
-                <div>Card 2</div>
-                <div>Card 3</div>
-                <div>Card 4</div>
-                <div>Card 5</div>
-                <div>Card 6</div>
-                <div>Card 7</div>
-                <div>Card 8</div>
-                <div>Card 9</div>
-            </div>
-        </div>
-    </div>
+        <div id="characterList" style="margin-left: 3.5rem; margin-top: 2rem;"></div>
+        <div id="characterSearchList" style="margin-left: 3.5rem;"></div>
 </body>
+
+<script src="applet-4.js"></script>
 
 </html>
