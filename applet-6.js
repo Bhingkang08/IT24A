@@ -1,5 +1,5 @@
-class todoList{
-    constructor(){
+class TodoList {
+    constructor() {
         this.editingIndex = -1;
         this.addButton = document.getElementById('addButton');
         this.todoInput = document.getElementById('todoInput');
@@ -19,7 +19,6 @@ class todoList{
             this.editingIndex === -1 ? this.addTask(taskText) : this.updateTask(taskText);
             this.todoInput.value = '';
         }
-
     }
     addTask(taskText) {
         const listItem = document.createElement('li');
@@ -34,8 +33,8 @@ class todoList{
             </div>
         `;
         this.todoList.appendChild(listItem);
-
     }
+
     doneTask(event) {
         const taskItem = event.target.closest('.todo-item');
         const taskText = taskItem.querySelector('.task-text');
@@ -43,12 +42,10 @@ class todoList{
 
         const buttons = taskItem.querySelectorAll('button');
         buttons.forEach(button => button.disabled = true);
-
     }
     updateTask(taskText) {
         this.todoList.children[this.editingIndex].querySelector('.task-text').textContent = taskText;
         this.resetEditing();
-
     }
     removeTask(event) {
         this.todoList.removeChild(event.target.closest('.todo-item'));
@@ -63,16 +60,38 @@ class todoList{
         this.editingIndex = -1;
         this.addButton.textContent = 'Add';
     }
+        
 }
-class TimestampedTodoList extends todoList {
+
+class TimestampedTodoList extends TodoList {
     addTask(taskText) {
         super.addTask(taskText);
-        const taskItem = this.todoList.lastChild; 
+        const taskItem = this.todoList.lastChild;
         const timestamp = document.createElement('span');
         timestamp.className = 'timestamp';
         timestamp.textContent = new Date().toLocaleString();
         taskItem.appendChild(timestamp);
     }
-    
 }
-document.addEventListener('DOMContentLoaded', () => new todoList());
+document.addEventListener('DOMContentLoaded', () => new TodoList());
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

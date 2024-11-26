@@ -1,111 +1,117 @@
-class LeafletMap {
-  constructor(containerId, center, zoom) {
-    this.map = L.map(containerId).setView(center, zoom);
-    this.initTileLayer();
 
-    this.attendanceCountB = 0;
-    this.attendanceCountW = 0;
-    this.attendanceCountK = 0;
+class MapHandler {
+    constructor(mapElementId, initialCoords, initialZoomLevel) {
+        this.mapInstance = L.map(mapElementId).setView(initialCoords, initialZoomLevel);
+        this.setupTileLayer();
 
+        this.attendanceCounts = {
+            SC: 0,
+            BA: 0,
+            Lab: 0,
+        };
 
-    this.loggedData = [];
+        this.markerRegistry = {};
+        this.markerList = [];
+        this.loggedEntries = [];
 
-    this.btn = document.getElementById("btn1");
-    this.btn1 = document.getElementById("btn2");
-    this.btn2 = document.getElementById("btn3");
+        this.initializeUIComponents();
+        this.bindEventListeners();
+    }
 
+    setupTileLayer() {
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors | Sample for new corales BSIT student'
+        }).addTo(this.mapInstance);
+    }
 
-    this.btnclear = document.getElementById("btnclear");
-    this.logCountElement = document.getElementById("logCountBH");
-    this.logCount1Element = document.getElementById("logCountSTJ");
-    this.logCount2Element = document.getElementById("logCountNBSC");
-    this.idContainer = document.getElementById("logContainer");
+    initializeUIComponents() {
+        this.buttonSC = document.getElementById('btn');
+        this.buttonBA = document.getElementById('btn1');
+        this.buttonLab = document.getElementById('btn2');
+        this.buttonClear = document.getElementById('btnclear');
+        this.displaySCCount = document.getElementById('logCount');
+        this.displayBACount = document.getElementById('logCountBA');
+        this.displayLabCount = document.getElementById('logCountCCS');
+        this.logDisplayContainer = document.getElementById('logContainer');
+    }
 
-    this.btn.addEventListener("click", () => this.dataB());
-    this.btn1.addEventListener("click", () => this.dataW());
-    this.btn2.addEventListener("click", () => this.dataK());
-    this.btnclear.addEventListener("click", () => this.clearLogs());
-  }
+    bindEventListeners() {
+        this.buttonSC.addEventListener('click', () => this.recordAttendance('SC'));
+        this.buttonBA.addEventListener('click', () => this.recordAttendance('BA'));
+        this.buttonLab.addEventListener('click', () => this.recordAttendance('Lab'));
+        this.buttonClear.addEventListener('click', () => this.resetAttendanceLogs());
+    }
 
-  initTileLayer() {
-    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      maxZoom: 19,
-      attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> Joy Marie Yepes | Map',
-    }).addTo(this.map);
-  }
-
-  addMarker(lat, long, message) {
-    const marker = L.marker([lat, long]).addTo(this.map).bindPopup(message);
-  }
-
-  loadMarkersFromJson(url) {
-    fetch(url)
-      .then((response) => response.json())
-      .then((data) => {
-        data.forEach((marker) => {
-          this.addMarker(marker.latitude, marker.longitude, marker.message);
+    addMapMarker(latitude, longitude, label) {
+        const marker = L.marker([latitude, longitude]).addTo(this.mapInstance);
+        this.markerRegistry[label] = (this.markerRegistry[label] || 0) + 1;
+        this.refreshMarkerPopup(marker, label);
+        
+        marker.on('click', () => {
+            this.markerRegistry[label]++;
+            this.refreshMarkerPopup(marker, label);
         });
-      })
-      .catch((error) => console.error("Error Loading servers:", error));
-  }
 
-  clearLogs() {
-    this.attendanceCountB = 0;
-    this.attendanceCountW = 0;
-    this.attendanceCountK = 0;
+        this.markerList.push(marker);
+    }
 
-    this.loggedData = [];
-    this.updateLogDisplay();
-  }
+    refreshMarkerPopup(marker, label) {
+        const count = this.markerRegistry[label];
+        marker.bindPopup(`${label}<br>Attendance logs: ${count}`).openPopup();
+    }
 
-  displayLogCount() {
-    this.logCountElement.innerHTML = `Bording House: ${this.attendanceCountB}`;
-    this.logCount1Element.innerHTML = `St. Joseph: ${this.attendanceCountW}`;
-    this.logCount2Element.innerHTML = `Northern Bukidnon State College: ${this.attendanceCountK}`;
-  }
+    loadMarkers(url) {
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(entry => {
+                    this.addMapMarker(entry.latitude, entry.longitude, entry.message);
+                });
+            })
+            .catch(error => console.error("Error loading markers:", error));
+    }
 
+    resetAttendanceLogs() {
+        Object.keys(this.attendanceCounts).forEach(key => {
+            this.attendanceCounts[key] = 0;
+        });
 
+        this.loggedEntries = [];
+        this.markerRegistry = {};
+        
+        this.markerList.forEach(marker => {
+            const label = marker.getPopup().getContent().split('<br>')[0];
+            this.markerRegistry[label] = 0;
+            this.refreshMarkerPopup(marker, label);
+        });
 
-  dataB() {
-    this.addMarker(
-        8.362149960960185,
-        124.8710958666867,
-      "Boarding House"
-    );
-    this.attendanceCountB++;
-    this.updateLogDisplay();
-  }
+        this.updateLogCounts();
+    }
 
+    updateLogCounts() {
+        this.displaySCCount.innerHTML = `SC Building Attendance: ${this.attendanceCounts.SC}`;
+        this.displayBACount.innerHTML = `BA Building Attendance: ${this.attendanceCounts.BA}`;
+        this.displayLabCount.innerHTML = `CCS Laboratory Attendance: ${this.attendanceCounts.Lab}`;
+    }
 
-  dataW() {
-    this.addMarker(8.364204, 124.868473, "St. Joseph");
-    this.attendanceCountW++;
-    this.updateLogDisplay();
-  }
+    recordAttendance(building) {
+        const coords = {
+            SC: [8.360283,  124.867513],
+            BA: [8.359219, 124.868583],
+            Lab: [8.359667, 124.869179]
+        };
 
-  dataK() {
-    this.addMarker(8.359871661401142, 124.86818789879149, "Northern Bukidnon State College");
-    this.attendanceCountK++;
-    this.updateLogDisplay();
-  }
-
-  
-  updateLogDisplay() {
-    this.idContainer.innerHTML = "";
-    this.loggedData.forEach((data) => {
-      const logItem = document.createElement("div");
-      logItem.className = "log-item";
-      this.idContainer.appendChild(logItem);
-    });
-    this.displayLogCount();
-  }
+        this.addMapMarker(...coords[building], `${building} building`);
+        this.attendanceCounts[building]++; // Increment the attendance count
+        this.updateLogCounts();
+    }
 }
-const Mymap = new LeafletMap("map", [8.361848, 124.868789], 16);
 
-Mymap.loadMarkersFromJson("applet-2.json");
+const mapInstance = new MapHandler('map', [8.359735, 124.869206],18);
+mapInstance.loadMarkers('applet-2.json');
 
-document.addEventListener("DOMContentLoaded", () => {
-  Mymap.displayLogCount();
-  Mymap.loadMarkersFromJson("applet-2.json");
+document.addEventListener('DOMContentLoaded', () => {
+    mapInstance.updateLogCounts();
+    mapInstance.loadMarkers('applet-2.json');
 });

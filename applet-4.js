@@ -1,61 +1,58 @@
-class CharacterList {
-
+class StudentList {
+    
     constructor(dataUrl) {
         this.dataUrl = dataUrl;
-        this.characters = [];
+        this.students = [];
         this.init();
-    }   
+    }
 
     async init() {
         await this.fetchData();
-        this.renderCharacterList(this.characters);
+        this.renderStudentList(this.students); 
         this.bindSearchEvent();
     }
-
 
     async fetchData() {
         try {
             const response = await fetch(this.dataUrl);
-            this.characters = await response.json();
+            this.students = await response.json();
         } catch (error) {
             console.error('Error fetching data:', error);
         }
     }
 
-
-    renderCharacterList(characters) {
-        const characterListContainer = document.getElementById('characterList');
-        characterListContainer.innerHTML = characters.map(character =>
+    renderStudentList(students) {
+        const studentListContainer = document.getElementById('studentList');
+        studentListContainer.innerHTML = students.map(student => 
             `<button class="btn btn-primary" style="margin-top:15px; 
                                                     width:25rem">
-                ${character.character_name} | ${character.character_origin}
+                ${student.student_name} | ${student.student_program}
             </button><br>`
         ).join('');
     }
 
     bindSearchEvent() {
-        const characterSearchBar = document.getElementById('characterSearchBar');
-        const characterSearchListContainer = document.getElementById('characterSearchList');
+        const studentSearchBar = document.getElementById('studentSearchBar');
+        const studentSearchListContainer = document.getElementById('studentSearchList');
 
-        characterSearchBar.addEventListener('input', () => {
-            this.filterCharacters(characterSearchBar.value, characterSearchListContainer);
+        studentSearchBar.addEventListener('input', () => {
+            this.filterStudents(studentSearchBar.value, studentSearchListContainer);
         });
 
-        this.renderCharacterList(this.characters, characterSearchListContainer);
+        this.renderStudentList(this.students, studentSearchListContainer);
     }
 
-    
-    filterCharacters(query, searchListContainer) {
-        const filteredCharacters = this.characters.filter(character => {
-            const fullName = `${character.character_name} ${character.character_origin}`;
+    filterStudents(query, searchListContainer) {
+        const filteredStudents = this.students.filter(student => {
+            const fullName = `${student.student_name} ${student.student_program}`;
             return fullName.toLowerCase().includes(query.toLowerCase());
         });
 
         searchListContainer.innerHTML = '';
 
-        this.renderCharacterList(filteredCharacters, searchListContainer);
+        this.renderStudentList(filteredStudents, searchListContainer);
     }
-
+    
 }
 
-const characterList = new CharacterList('applet-4.json');
+const studentList = new StudentList('applet-4.json');
