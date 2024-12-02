@@ -12,16 +12,103 @@
         <div id="map" style="width: 100%; height: 45%;"></div>
 
         <!-- Information panel for selected destination -->
-        <div id="info-panel" style="width: 120%;">
+        <div id="info-panel" style="width: 100%;">
             <div class="walu-container"></div>
+			
         </div>
-
-        <!-- Attendance Button -->
-        <div style="margin: 10px; text-align: center;">
-            <button id="attendance-btn" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">
+		<div style="padding: 10px 30px; margin-left: 60px;">
+		            <button id="attendance-btn" style="padding: 2px 20px; font-size: 16px; cursor: pointer;">
                 Mark Attendance
             </button>
-        </div>
+<div id="player" style="height:200px;">
+
+    <audio id="audio" controls>
+        Your browser does not support the audio element.
+    </audio>
+    <div>
+        <button class="x" id="prevBtn"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-skip-backward-btn" viewBox="0 0 16 16">
+  <path d="M11.21 5.093A.5.5 0 0 1 12 5.5v5a.5.5 0 0 1-.79.407L8.5 8.972V10.5a.5.5 0 0 1-.79.407L5 8.972V10.5a.5.5 0 0 1-1 0v-5a.5.5 0 0 1 1 0v1.528l2.71-1.935a.5.5 0 0 1 .79.407v1.528z"/>
+  <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm15 0a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1z"/>
+</svg></button>
+        <button class="x" id="playBtn"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-circle" viewBox="0 0 16 16">
+  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+  <path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445"/>
+</svg></button>
+        <button class="x" id="pauseBtn"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pause-btn" viewBox="0 0 16 16">
+  <path d="M6.25 5C5.56 5 5 5.56 5 6.25v3.5a1.25 1.25 0 1 0 2.5 0v-3.5C7.5 5.56 6.94 5 6.25 5m3.5 0c-.69 0-1.25.56-1.25 1.25v3.5a1.25 1.25 0 1 0 2.5 0v-3.5C11 5.56 10.44 5 9.75 5"/>
+  <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm15 0a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1z"/>
+</svg></button>
+        <button class="x" id="nextBtn"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-skip-forward-btn" viewBox="0 0 16 16">
+  <path d="M4.79 5.093A.5.5 0 0 0 4 5.5v5a.5.5 0 0 0 .79.407L7.5 8.972V10.5a.5.5 0 0 0 .79.407L11 8.972V10.5a.5.5 0 0 0 1 0v-5a.5.5 0 0 0-1 0v1.528L8.29 5.093a.5.5 0 0 0-.79.407v1.528z"/>
+  <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm15 0a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1z"/>
+</svg></button>
+    </div>
+    <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0.5">
+</div>
+
+<script>
+    const audio = document.getElementById('audio');
+    const playBtn = document.getElementById('playBtn');
+    const pauseBtn = document.getElementById('pauseBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const volumeControl = document.getElementById('volumeControl');
+
+    // List of music files (add your own music files here)
+    const musicFiles = [
+        'MUSIC/1.mp3',
+        'MUSIC/2.mp3',
+        'MUSIC/3.mp3',
+        'MUSIC/4.mp3'
+        // Add more music files as needed
+    ];
+
+    let currentTrackIndex = 0;
+
+    function loadTrack(index) {
+        audio.src = musicFiles[index];
+        audio.load();
+    }
+
+    loadTrack(currentTrackIndex); // Load the first track
+
+    playBtn.addEventListener('click', () => {
+        audio.play();
+    });
+
+    pauseBtn.addEventListener('click', () => {
+        audio.pause();
+    });
+
+    nextBtn.addEventListener('click', () => {
+        currentTrackIndex = (currentTrackIndex + 1) % musicFiles.length; // Loop to the first track
+        loadTrack(currentTrackIndex);
+        audio.play();
+    });
+
+    prevBtn.addEventListener('click', () => {
+        currentTrackIndex = (currentTrackIndex - 1 + musicFiles.length) % musicFiles.length; // Loop to the last track
+        loadTrack(currentTrackIndex);
+        audio.play();
+    });
+
+    // Volume control
+    volumeControl.addEventListener('input', () => {
+        audio.volume = volumeControl.value;
+    });
+
+    // Optional: Play the next track automatically when the current track ends
+    audio.addEventListener('ended', () => {
+        nextBtn.click();
+    });
+
+</script>
+     
+
+      
+</div>
+        <!-- Attendance Button -->
+ 
     </div>
 
     <!-- Leaflet JS -->
